@@ -1,6 +1,12 @@
 #!/usr/local/bin/python3
 from PIL import Image
 import os
+import operator
+from collections import defaultdict
+import re
+import functools
+
+
 def makePalette(array_colors):
   # Also the number of colors:
   THUMBNAILS_PER_ROW = 6
@@ -49,28 +55,31 @@ def pixelate(pal):
     imgPath = os.path.join('images/',filename)
     img = Image.open(imgPath)
 
-
-
-    imgSmall = img.resize((16,16),resample=Image.BILINEAR)
+    imgSmall = img.resize((70,70),resample=Image.BILINEAR)
 
     img2 = Image.new('P', (16,16))
-    img2.putpalette(pal * 51)
+    img2.putpalette(pal * 32)
     img2 = quantizetopalette(imgSmall,img2,dither=False)
-    # img2.show()
     if img2.mode != 'RGB':
       img2 = img2.convert('RGB')
 
     result = img2.resize(img.size,Image.NEAREST)
 
-    newImgFileName = "new_{}.jpeg".format(counter)
+    newImgFileName = "new_{}.png".format(counter)
     counter += 1
     newImgPath = os.path.join('new_images/',newImgFileName)
     print('Saving new image: {}'.format(newImgPath))
-    result.save(newImgPath)
+    result.save(newImgPath, "PNG")
 
-
+# Random test array (4):
 # ARRAY_COLORS = [0, 0, 4, 127, 149, 127, 40, 187, 40, 33, 33, 240]
-ARRAY_COLORS = [255,153,42,255,104,180,51,153,254,108,219,108,255,212,45]
+
+# Rio Colors Post It collection (5):
+#ARRAY_COLORS = [255,153,42,255,104,180,51,153,254,108,219,108,255,212,45]
+
+# Starry Night Colors (8):
+ARRAY_COLORS = [0,89,166,51,153,254,83,211,230,0,180,143,255,212,45,249,243,167,0,0,0,255,255,255]
+
 
 # p = makePalette(ARRAY_COLORS)
 pixelate(pal=ARRAY_COLORS) 

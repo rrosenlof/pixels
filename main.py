@@ -49,16 +49,18 @@ def pixelate(pal):
     imgPath = os.path.join('images/',filename)
     img = Image.open(imgPath)
 
+
+
+    imgSmall = img.resize((16,16),resample=Image.BILINEAR)
+
     img2 = Image.new('P', (16,16))
-    img2.putpalette(pal * 64)
-    img2 = quantizetopalette(img,img2,dither=False)
+    img2.putpalette(pal * 51)
+    img2 = quantizetopalette(imgSmall,img2,dither=False)
     # img2.show()
     if img2.mode != 'RGB':
       img2 = img2.convert('RGB')
 
-    imgSmall = img2.resize((64,64),resample=Image.BILINEAR)
-
-    result = imgSmall.resize(img.size,Image.NEAREST)
+    result = img2.resize(img.size,Image.NEAREST)
 
     newImgFileName = "new_{}.jpeg".format(counter)
     counter += 1
@@ -67,7 +69,8 @@ def pixelate(pal):
     result.save(newImgPath)
 
 
-ARRAY_COLORS = [120, 130, 4, 153, 149, 113, 195, 187, 153, 204, 197, 164]
+# ARRAY_COLORS = [0, 0, 4, 127, 149, 127, 40, 187, 40, 33, 33, 240]
+ARRAY_COLORS = [255,153,42,255,104,180,51,153,254,108,219,108,255,212,45]
 
 # p = makePalette(ARRAY_COLORS)
 pixelate(pal=ARRAY_COLORS) 

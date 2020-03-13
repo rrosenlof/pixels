@@ -1,11 +1,11 @@
 #!/usr/local/bin/python3
-from PIL import Image
+from PIL import Image, ImageEnhance
 import os
 import operator
 from collections import defaultdict
 import re
 import functools
-
+from haishoku.haishoku import Haishoku
 
 def makePalette(array_colors):
   # Also the number of colors:
@@ -49,24 +49,47 @@ def quantizetopalette(silf, palette, dither=False):
         return silf._makeself(im)
 
 def pixelate(pal):
-  print('pal: {}'.format(pal))
-  counter = 1
   for filename in os.listdir('images'):
     imgPath = os.path.join('images/',filename)
     img = Image.open(imgPath)
 
-    imgSmall = img.resize((24,24),resample=Image.BILINEAR)
+    # modify the image a bit and save a contrasted copy
+    contrast = ImageEnhance.Contrast(img)
+    contrast = contrast.enhance(2.0)
+    contrast = ImageEnhance.Color(contrast)
+    contrast = contrast.enhance(2.5)
+    contrast = contrast.resize((256,256),resample=Image.BILINEAR)
+    contrastFileName = "contrast_{}".format(filename)
+    contrastImgPath = os.path.join('contrast_images/',contrastFileName)
+    contrast.save(contrastImgPath, "PNG")
+    newContrastImg = Image.open(contrastImgPath)
 
+    # get palette
+    palette = Haishoku.getPalette(contrastImgPath)
+    print('palette: {}'.format(palette))
+
+    # change format of palette to remove percents
+    newPalette = []
+    for i in range(0,8):
+      for j in palette[i][1]:
+        newPalette.append(j)
+    print(newPalette)
+
+    # shrink image to create pixels
+    imgSmall = contrast.resize((24,16),resample=Image.BILINEAR)
+
+    # change color of the image
     img2 = Image.new('P', (16,16))
-    img2.putpalette(pal * 32)
+    img2.putpalette(newPalette * 32)
     img2 = quantizetopalette(imgSmall,img2,dither=False)
     if img2.mode != 'RGB':
       img2 = img2.convert('RGB')
 
+    # resize the image to original size
     result = img2.resize(img.size,Image.NEAREST)
 
+    # save the new image
     newImgFileName = "new_{}".format(filename)
-    counter += 1
     newImgPath = os.path.join('new_images/',newImgFileName)
     print('Saving new image: {}'.format(newImgPath))
     result.save(newImgPath, "PNG")

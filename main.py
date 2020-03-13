@@ -55,7 +55,7 @@ def pixelate(pal):
     imgPath = os.path.join('images/',filename)
     img = Image.open(imgPath)
 
-    imgSmall = img.resize((70,70),resample=Image.BILINEAR)
+    imgSmall = img.resize((24,24),resample=Image.BILINEAR)
 
     img2 = Image.new('P', (16,16))
     img2.putpalette(pal * 32)
@@ -65,7 +65,7 @@ def pixelate(pal):
 
     result = img2.resize(img.size,Image.NEAREST)
 
-    newImgFileName = "new_{}.png".format(counter)
+    newImgFileName = "new_{}".format(filename)
     counter += 1
     newImgPath = os.path.join('new_images/',newImgFileName)
     print('Saving new image: {}'.format(newImgPath))

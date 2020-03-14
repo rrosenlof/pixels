@@ -49,13 +49,13 @@ def quantizetopalette(silf, palette, dither=False):
         return silf._makeself(im)
 
 def pixelate(pal):
-  for filename in os.listdir('other_images'):
-    imgPath = os.path.join('other_images/',filename)
+  for filename in os.listdir('images'):
+    imgPath = os.path.join('images/',filename)
     img = Image.open(imgPath)
 
     # modify the image a bit and save a contrasted copy
     contrast = ImageEnhance.Contrast(img)
-    contrast = contrast.enhance(2.0)
+    contrast = contrast.enhance(1.4)
     contrast = ImageEnhance.Color(contrast)
     contrast = contrast.enhance(2.5)
     contrast = contrast.resize((256,256),resample=Image.BILINEAR)
@@ -76,7 +76,7 @@ def pixelate(pal):
     print(newPalette)
 
     # shrink image to create pixels
-    imgSmall = contrast.resize((64,64),resample=Image.BILINEAR)
+    imgSmall = contrast.resize((172,172),resample=Image.BILINEAR)
 
     # change color of the image
     img2 = Image.new('P', (16,16))

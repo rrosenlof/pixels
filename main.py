@@ -49,34 +49,45 @@ def quantizetopalette(silf, palette, dither=False):
         return silf._makeself(im)
 
 def pixelate(pal):
-  for filename in os.listdir('images'):
-    imgPath = os.path.join('images/',filename)
+  for filename in os.listdir('topaint_images'):
+    imgPath = os.path.join('topaint_images/',filename)
     img = Image.open(imgPath)
+    print('--> {}'.format(imgPath))
 
     # modify the image a bit and save a contrasted copy
     contrast = ImageEnhance.Contrast(img)
-    contrast = contrast.enhance(1.4)
+    contrast = contrast.enhance(1.8)
     contrast = ImageEnhance.Color(contrast)
     contrast = contrast.enhance(2.5)
-    contrast = contrast.resize((256,256),resample=Image.BILINEAR)
-    contrastFileName = "contrast_{}".format(filename)
-    contrastImgPath = os.path.join('contrast_images/',contrastFileName)
+
+    # get dims to resize and save contrasted image
+    width, height = img.size
+    ratio = width/height
+    resize_w = 72 * ratio
+    resize_h = 72 * (1/ratio)
+    resize_w = int(round(resize_w,0))
+    resize_h = int(round(resize_h,0))
+    print('   ratio: {}'.format(ratio))
+    print('   orig size: {}, {}'.format(width,height))
+    print('   resizes: {}, {}'.format(resize_w, resize_h))
+    contrast = contrast.resize((resize_h,resize_w),resample=Image.BILINEAR)
+    contrastFileName = "new_{}".format(filename)
+    contrastImgPath = os.path.join('new_topaint_images/',contrastFileName)
     contrast.save(contrastImgPath, "PNG")
     newContrastImg = Image.open(contrastImgPath)
 
     # get palette
     palette = Haishoku.getPalette(contrastImgPath)
-    print('palette: {}'.format(palette))
 
     # change format of palette to remove percents
     newPalette = []
-    for i in range(0,8):
+    for i in range(0,len(palette)):
       for j in palette[i][1]:
         newPalette.append(j)
-    print(newPalette)
+    print('   Palette: {}'.format(newPalette))
 
     # shrink image to create pixels
-    imgSmall = contrast.resize((172,172),resample=Image.BILINEAR)
+    imgSmall = contrast.resize((resize_w,resize_h),resample=Image.BILINEAR)
 
     # change color of the image
     img2 = Image.new('P', (16,16))
@@ -90,7 +101,7 @@ def pixelate(pal):
 
     # save the new image
     newImgFileName = "new_{}".format(filename)
-    newImgPath = os.path.join('new_images/',newImgFileName)
+    newImgPath = os.path.join('new_topaint_images/',newImgFileName)
     print('Saving new image: {}'.format(newImgPath))
     result.save(newImgPath, "PNG")
 

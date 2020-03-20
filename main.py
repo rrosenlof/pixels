@@ -126,7 +126,7 @@ ARRAY_COLORS = [0,89,166,51,153,254,83,211,230,0,180,143,255,212,45,249,243,167,
 
 
 # p = makePalette(ARRAY_COLORS)
-pixelate(g=128,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
-pixelate(g=72,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
-pixelate(g=36,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
-pixelate(g=18,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
+pixelate(g=128,dir='images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
+pixelate(g=72,dir='images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
+# pixelate(g=36,dir='images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
+# pixelate(g=18,dir='images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 

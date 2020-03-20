@@ -48,9 +48,10 @@ def quantizetopalette(silf, palette, dither=False):
     except AttributeError:
         return silf._makeself(im)
 
-def pixelate(pal):
-  for filename in os.listdir('topaint_images'):
-    imgPath = os.path.join('topaint_images/',filename)
+def pixelate(g, dir, new_dir):
+
+  for filename in os.listdir(dir):
+    imgPath = os.path.join(('{}/'.format(dir)),filename)
     img = Image.open(imgPath)
     print('--> {}'.format(imgPath))
 
@@ -63,16 +64,16 @@ def pixelate(pal):
     # get dims to resize and save contrasted image
     width, height = img.size
     ratio = width/height
-    resize_w = 72 * ratio
-    resize_h = 72 * (1/ratio)
+    resize_w = g * ratio
+    resize_h = g * (1/ratio)
     resize_w = int(round(resize_w,0))
     resize_h = int(round(resize_h,0))
     print('   ratio: {}'.format(ratio))
     print('   orig size: {}, {}'.format(width,height))
     print('   resizes: {}, {}'.format(resize_w, resize_h))
     contrast = contrast.resize((resize_h,resize_w),resample=Image.BILINEAR)
-    contrastFileName = "new_{}".format(filename)
-    contrastImgPath = os.path.join('new_topaint_images/',contrastFileName)
+    contrastFileName = "pxl_{}".format(filename)
+    contrastImgPath = os.path.join(('{}/'.format(new_dir)),contrastFileName)
     contrast.save(contrastImgPath, "PNG")
     newContrastImg = Image.open(contrastImgPath)
 
@@ -100,8 +101,8 @@ def pixelate(pal):
     result = img2.resize(img.size,Image.NEAREST)
 
     # save the new image
-    newImgFileName = "new_{}".format(filename)
-    newImgPath = os.path.join('new_topaint_images/',newImgFileName)
+    newImgFileName = "pxl_{}_{}".format(g,filename)
+    newImgPath = os.path.join(('{}/'.format(new_dir)),newImgFileName)
     print('Saving new image: {}'.format(newImgPath))
     result.save(newImgPath, "PNG")
 
@@ -116,4 +117,7 @@ ARRAY_COLORS = [0,89,166,51,153,254,83,211,230,0,180,143,255,212,45,249,243,167,
 
 
 # p = makePalette(ARRAY_COLORS)
-pixelate(pal=ARRAY_COLORS) 
+pixelate(g=128,dir='single_images',new_dir='new_images') 
+pixelate(g=72,dir='single_images',new_dir='new_images') 
+pixelate(g=36,dir='single_images',new_dir='new_images') 
+pixelate(g=18,dir='single_images',new_dir='new_images') 

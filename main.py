@@ -48,7 +48,7 @@ def quantizetopalette(silf, palette, dither=False):
     except AttributeError:
         return silf._makeself(im)
 
-def pixelate(g, dir, new_dir):
+def pixelate(g, dir, new_dir, contrast_val, color_val):
 
   for filename in os.listdir(dir):
     imgPath = os.path.join(('{}/'.format(dir)),filename)
@@ -56,7 +56,8 @@ def pixelate(g, dir, new_dir):
     print('--> {}'.format(imgPath))
 
     # change contrast and brightness
-    contrast = contrast_img(img)
+    contrast = contrast_img(img,contrast_val,color_val)
+    # contrast = contrast_img(img)
 
     # get dims to resize and save contrasted image
     width, height = img.size
@@ -98,7 +99,7 @@ def pixelate(g, dir, new_dir):
 
     # resize the image to original size
     result = img2.resize(img.size,Image.NEAREST)
-
+    
     # save the new image
     newImgFileName = "pxl_{}_{}".format(g,filename)
     newImgPath = os.path.join(('{}/'.format(new_dir)),newImgFileName)
@@ -125,7 +126,7 @@ ARRAY_COLORS = [0,89,166,51,153,254,83,211,230,0,180,143,255,212,45,249,243,167,
 
 
 # p = makePalette(ARRAY_COLORS)
-pixelate(g=128,dir='single_images',new_dir='new_images') 
-pixelate(g=72,dir='single_images',new_dir='new_images') 
-pixelate(g=36,dir='single_images',new_dir='new_images') 
-pixelate(g=18,dir='single_images',new_dir='new_images') 
+pixelate(g=128,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
+pixelate(g=72,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
+pixelate(g=36,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 
+pixelate(g=18,dir='single_images',new_dir='new_images',contrast_val=1.7,color_val=2.0) 

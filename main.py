@@ -55,11 +55,8 @@ def pixelate(g, dir, new_dir):
     img = Image.open(imgPath)
     print('--> {}'.format(imgPath))
 
-    # modify the image a bit and save a contrasted copy
-    contrast = ImageEnhance.Contrast(img)
-    contrast = contrast.enhance(1.8)
-    contrast = ImageEnhance.Color(contrast)
-    contrast = contrast.enhance(2.5)
+    # change contrast and brightness
+    contrast = contrast_img(img)
 
     # get dims to resize and save contrasted image
     width, height = img.size
@@ -71,13 +68,15 @@ def pixelate(g, dir, new_dir):
     print('   ratio: {}'.format(ratio))
     print('   orig size: {}, {}'.format(width,height))
     print('   resizes: {}, {}'.format(resize_w, resize_h))
+
+    # resize contrasted image and save it
     contrast = contrast.resize((resize_h,resize_w),resample=Image.BILINEAR)
-    contrastFileName = "pxl_{}".format(filename)
+    contrastFileName = "pxl_{}_{}".format(g,filename)
     contrastImgPath = os.path.join(('{}/'.format(new_dir)),contrastFileName)
     contrast.save(contrastImgPath, "PNG")
     newContrastImg = Image.open(contrastImgPath)
 
-    # get palette
+    # get palette of new image
     palette = Haishoku.getPalette(contrastImgPath)
 
     # change format of palette to remove percents
@@ -105,6 +104,15 @@ def pixelate(g, dir, new_dir):
     newImgPath = os.path.join(('{}/'.format(new_dir)),newImgFileName)
     print('Saving new image: {}'.format(newImgPath))
     result.save(newImgPath, "PNG")
+
+def contrast_img(img, contrast_val=1.0, color_val=1.0):
+  # modify the image a bit and return a contrasted copy
+  contrast = ImageEnhance.Contrast(img)
+  contrast = contrast.enhance(contrast_val)
+  contrast = ImageEnhance.Color(contrast)
+  contrast = contrast.enhance(color_val)
+
+  return contrast
 
 # Random test array (4):
 # ARRAY_COLORS = [0, 0, 4, 127, 149, 127, 40, 187, 40, 33, 33, 240]

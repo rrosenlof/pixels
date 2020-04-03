@@ -1,5 +1,5 @@
 #!/usr/local/bin/python3
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImagePalette
 import os
 import operator
 from collections import defaultdict
@@ -26,9 +26,14 @@ def makePalette(array_colors):
   rgb_image.save('swatch.png')
   return rgb_image
 
-def getPaletteOfImg(imgPath):
+def getPaletteOfImg(imgPath,contrast_val=1.0,color_val=1.0):
   img = Image.open(imgPath)
-
+  pal = ImagePalette.ImagePalette()
+  print(pal)
+  contrast = contrast_img(img,contrast_val,color_val)
+  print('contrast: {}'.format(contrast))
+  pal = img.getpalette()
+  print(pal)
   newPalette = []
   palette = Haishoku.getPalette(imgPath)
 
@@ -137,9 +142,9 @@ def contrast_img(img, contrast_val=1.0, color_val=1.0):
 # Starry Night Colors (8):
 ARRAY_COLORS = [0,89,166,51,153,254,83,211,230,0,180,143,255,212,45,249,243,167,0,0,0,255,255,255]
 
-pal = getPaletteOfImg('images/kershisnik.jpg')
+pal = getPaletteOfImg('images/bacchus_ariadne.jpg',contrast_val=2.0,color_val=1.5)
 makePalette(pal)
 
 # p = makePalette(ARRAY_COLORS)
 # pixelate(g=360,dir='images',new_dir='new_images',contrast_val=1.0,color_val=1.0,palette=pal)
-pixelate(g=160,dir='single_images',new_dir='new_images',contrast_val=1.0,color_val=1.0,palette=pal) 
+# pixelate(g=160,dir='single_images',new_dir='new_images',contrast_val=1.0,color_val=1.0,palette=pal) 

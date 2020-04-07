@@ -9,7 +9,7 @@ from haishoku.haishoku import Haishoku
 
 def makePalette(array_colors):
   # Also the number of colors:
-  THUMBNAILS_PER_ROW = 6
+  THUMBNAILS_PER_ROW = int(len(array_colors)/3)
   THUMBNAIL_WIDTH = 10
   THUMBNAIL_HEIGHT = 10
   MODE = 'RGB'
@@ -140,11 +140,22 @@ def contrast_img(img, contrast_val=1.0, color_val=1.0):
 # ARRAY_COLORS = [255,153,42,255,104,180,51,153,254,108,219,108,255,212,45]
 
 # Starry Night Colors (8):
-ARRAY_COLORS = [0,89,166,51,153,254,83,211,230,0,180,143,255,212,45,249,243,167,0,0,0,255,255,255]
+# ARRAY_COLORS = [0,89,166,51,153,254,83,211,230,0,180,143,255,212,45,249,243,167,0,0,0,255,255,255]
 
-pal = getPaletteOfImg('images/bacchus_ariadne.jpg',contrast_val=2.0,color_val=1.5)
-makePalette(pal)
+# Black and white:
+# ARRAY_COLORS = [0,0,0,255,255,255]
+
+# CMYK:
+# ARRAY_COLORS = [0, 255, 255, 255, 0, 255, 255, 255, 0, 0,0,0]
+
+# RGB:
+# ARRAY_COLORS = [0,0,255,0,255,0,255,0,0,0,0,0]
+
+
+# pal = getPaletteOfImg('new_images/pxl_160_three_musicians.png',contrast_val=2.0,color_val=1.5)
+# print(pal)
+# makePalette(pal)
 
 # p = makePalette(ARRAY_COLORS)
-# pixelate(g=360,dir='images',new_dir='new_images',contrast_val=1.0,color_val=1.0,palette=pal)
-# pixelate(g=160,dir='single_images',new_dir='new_images',contrast_val=1.0,color_val=1.0,palette=pal) 
+pixelate(g=160,dir='people_images',new_dir='new_art_images',contrast_val=2.0,color_val=1.3)
+# pixelate(g=160,dir='images',new_dir='new_images',contrast_val=4.0,color_val=4.0,palette=ARRAY_COLORS) 

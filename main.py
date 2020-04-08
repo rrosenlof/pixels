@@ -157,5 +157,5 @@ def contrast_img(img, contrast_val=1.0, color_val=1.0):
 # makePalette(pal)
 
 # p = makePalette(ARRAY_COLORS)
-pixelate(g=160,dir='people_images',new_dir='new_art_images',contrast_val=2.0,color_val=1.3)
+pixelate(g=160,dir='art_images',new_dir='new_art_images',contrast_val=2.0,color_val=2.0)
 # pixelate(g=160,dir='images',new_dir='new_images',contrast_val=4.0,color_val=4.0,palette=ARRAY_COLORS) 
